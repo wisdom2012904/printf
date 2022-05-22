@@ -7,7 +7,7 @@ The aim of the project is to understand the concept of team work and also the co
 
  Tasks
 
-Write a function that produces output according to a format.
+# Write a function that produces output according to a format.
 
 *format – contains the string that is printed
 
