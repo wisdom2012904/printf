@@ -1,83 +1,245 @@
 .\" Manpage for _printf.
-.\" Contact @wisaoko to correct errors or typos.
-.TH man 8 "21 May 2022" "1.0" "_printf man page"
+
+.TH _printf 3 "May 2022" "1.0" "Program Manual for _printf"
+
 .SH NAME
-_printf
+
+ _printf - formatted output conversion and print data.
+
 .SH SYNOPSIS
-#include "main.h"
 
-#include <stdio.h>
+.nf
 
-#include <stdarg.h>
+.BI printf (FORMAT, ARGUMENT)...
+
+.PP
+
+.BI "#include 'main.h'"
+
+.BI "#include <stdarg.h>"
+
+.BI "#include <unistd.h>"
+
+.PP
+
+.BI "int _printf(const char *format, ...);"
+
+.BI "int print_prg(va_list __attribute__((unused)), char *, unsigned int);"
+
+.BI "int print_chr(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_str(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_int(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_bnr(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_unt(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_oct(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_hex(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_upx(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_usr(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_add(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_rev(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int print_rot(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinlint(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinlunt(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinloct(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinlhex(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinlupx(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinhint(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinhunt(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinhoct(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinhhex(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinhupx(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinpint(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinnoct(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinnhex(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinnupx(va_list arguments, char *buf, unsigned int ibuf);"
+
+.BI "int prinsint(va_list arguments, char *buf, unsigned int ibuf);"
+
+.PP
+
+.BI "int (*get_print_func(const char *s, int index))(va_list, char *, unsigned int);"
+
+.BI "int ev_print_func(const char *s, int index);"
+
+.PP
+
+.BI "unsigned int handl_buf(char *buf, char c, unsigned int ibuf);"
+
+.BI "int print_buf(char *buf, unsigned int nbuf);"
+
+.PP
+
+.BI "char *fill_binary_array(char *binary, long int int_in, int isneg, int limit);"
+
+.BI "char *fill_oct_array(char *bnr, char *oct);"
+
+.BI "char *fill_long_oct_array(char *bnr, char *oct);"
+
+.BI "char *fill_short_oct_array(char *bnr, char *oct);"
+
+.BI "char *fill_hex_array(char *bnr, char *hex, int isupp, int limit);"
+
+.PP
 
 .SH DESCRIPTION
-_printf produces output according to a format string. It will write output
-to standard out.
 
-_printf function prototype:
+The output function _printf() produce output according to a format. the function _printf converts the character strings that receives as argument and prints it on the standard output.
 
-int _printf(const char *format, ...)
+.SH RETURN VALUE
 
-.SS Return value
-Upon  successful  return,  _printf returns the number of characters
-printed (excluding the null byte used to end output to strings).
-If error occurs, _printf will return a negative value.
+Returns the number of all the characters printed, excluding the NULL byte used to end output to strings.
 
-.SS Format of the format string
-The format string is a character string.The format string is composed of:
-ordinary character (not%) which are copied unchanced to the output string and
-conversion specifications, each of which results in fetching zero or more
-subsequent arguments.  Each conversion  specification  is  introduced  by  the
-character  %, and ends with a conversion specifier.  In between there may be
-(in this order) zero or more flags, an optional minimum field width,
-an optional precision and an optional length modifier.
+.SH Format String Format
 
-"%%" formats do not consume an argument, it will just print a single "%".
+The format string is a character string, which contains two types of directives: ordinary characters which are coppied to the output stream; and conversion specifiers. Each conversion specification is introduced by the character %, and ends with a conversion specifier.
 
-.SS The conversion specifiers
-       The character % is followed by the following specifiers:
+.SH Conversion Specifiers
 
-       c If  no  l modifier is present, the int argument is converted to an
-       unsigned char, and the resulting character is written.
-       s If no l modifier is present: The const char * argument is expected to
-       be a pointer to an array of character type (pointer  to a string).
-       Characters from the array are written up to (but not including) a
-       terminating null byte ('\0'); if a precision is specified, no more than
-       the number specified are written.  If a precision is given, no
-       null  byte  need  be  present;  if the precision is not specified, or is
-       greater than the size of the array, the array must contain a
-       terminating null byte.
-       i The int argument is converted to signed decimal notation.
-       d The int argument is converted to signed decimal notation.
+This are the characters that specifies the type of conversion to be applied. The conversion specifiers and their meanings are: 
 
-.SS The flag characters
-       The character % is followed by zero or more of the following flags:
-       #      The value should be converted to an "alternate form".
-       ' '    (a space) A blank should be left before a positive number
-       (or empty string) produced by a signed conversion.
-       +      A sign (+ or -) should always be placed before a number produced
-       by a signed conversion.  By default a  sign  is used only for negative
-       numbers.  A + overrides a space if both are used.
+.TP
 
-.SH EXAMPLES
-Use _printf to print a string with variables of different types
+.B c
 
-#include "main.h"
+.R The fIint argument is converted to an unsigned char, and the resulting character is written.
 
-	  int main (void)
+.TP
 
-	   {
+.B s
 
-		int hour = 8, min = 30;
+.R The const char * argument is a pointer to an array of characters, that converts the corresponding argument to a character string.
 
-		    _printf("Next available flight: %0d:%0d tomorrow", hour, min);
+.TP
 
-       		    		  return (0);
+.B d, i
 
-				  }
-.SH SEE ALSO
-printf , scanf
+.R The argument is converted to signed decimal notation.
+
+.TP
+
+.B o, u, x, X
+
+.R The unsigned int argument is converted to unsigned octal  (base 8 number), unsigned decimal u (base 10 number), unsigned hexadecimal (base 16 number with lowercase letters) and unsigned hexadecimal X (base 16 number with uppercase letters).
+
+.TP
+
+.B %, %%
+
+.R If only the % character is written no argument is converted. The complete conversion specification is %%, that returns the actual sign if there in front.
+
+.TP
+
+.B S
+
+.R The const char argument is a pointer to an array of characters, that converts the corresponding argument to a character 
+
+ring, with non-printable characters (0 < ASCII value < 32 or >= 127).
+
+.TP
+
+.B p
+
+.R The void * pointerargument is printed in hexadecimal.
+
+.TP
+
+.B S
+
+.R The const char argument is a pointer to an array
+
+.SH The flag characters
+
+The character %is followed by zero the following flags:
+
+.TP
+
+.B +
+
+.R A sign + or - will be placed before a number followed by a signed conversion.
+
+.TP
+
+.B #
+
+.R Print number in hexadecimal, upeercase hexadecimal and octal where the first character of the output string is made zero.
+
+.TP
+
+.B ' '
+
+.R A space in blank should be left before a positive number followed by a signed conversion.
+
+.SH NOTES
+
+.R The _printf()is a project collaboration between Cynthia and Onyango
+
+actual students of Software Engineering at Alx
+
 .SH BUGS
-No known bugs.
-.SH AUTHOR
-Cynthian Aoko - Onyango Odhiambo
+
+.R In process
+
+.SH EXAMPLE
+
+.R To print the the string “Hello School!” and its length in decimal.
+
+
+#include ''main.h''
+
+
+int main(void)
+
+
+{
+
+
+	int length;
+
+
+	_printf(''%s'', ''Hello,school!'')
+
+
+	_printf(''Hello school! contains %d characters'', length);
+
+
+	length = _printf(''Hello school!'');
+
+
+	return (0);
+
+
+}
+
+.SH SEE ALSO
+
+.R printf(3)
+
+.SH AUTHORS
+
+Written by Cynthia Aoko and Onyango Odhiambo
+
