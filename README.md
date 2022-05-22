@@ -1,3 +1,4 @@
+
 # Printf project
 0x11.C-printf
 
@@ -18,4 +19,8 @@ C – convert input into character
 S – convert input into string
 
 Return – length of the formatted output
+
+
+
+By project by Cythian Aoko and Onyango Odhiambo
 
