@@ -1,6 +1,4 @@
-
 #include "main.h"
-
 /**
  * fill_binary_array - prints decimal in binary
  * @binary: pointer to binary
@@ -30,9 +28,15 @@ char *fill_binary_array(char *binary, long int int_in, int isneg, int limit)
 	{
 		for (i = 0; binary[i]; i++)
 			if (binary[i] == '0')
+
 				binary[i] = '1';
+
 			else
+
 				binary[i] = '0';
+
 	}
+
 	return (binary);
+
 }
