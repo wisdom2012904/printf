@@ -1,11 +1,9 @@
 #include "main.h"
-
 /**
  * _printf - custom function that format and print data
  * @format:  list of types of arguments passed to the function
  * Return: int
  */
-
 int _printf(const char *format, ...)
 {
 	va_list list;
@@ -13,10 +11,7 @@ int _printf(const char *format, ...)
 	int len_buf = 0;
 	char *s;
 	char *create_buff;
-
-	type_t ops[] = {
-		{"c", print_c},
-		{"s", print_s},
+	type_t ops[] = {{"c", print_c}, {"s", print_s},
 		{"i", print_i},
 		{"d", print_i},
 		{"b", print_bin},
