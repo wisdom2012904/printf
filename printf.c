@@ -8,66 +8,44 @@
 
 int _printf(const char *format, ...)
 {
-	va_list list;
-	int idx, j;
-	int len_buf = 0;
-	char *s;
-	char *create_buff;
+	unsigned int i = 0, len = 0, ibuf = 0;
+	va_list arguments;
+	int (*function)(va_list, char *, unsigned int);
+	char *buffer;
 
-	type_t ops[] = {
-		{"c", print_c},
-		{"s", print_s},
-		{"i", print_i},
-		{"d", print_i},
-		{"b", print_bin},
-		{NULL, NULL}
-	};
-	create_buff = malloc(1024 * sizeof(char));
-	if (create_buff == NULL)
-	{
-		free(create_buff);
+	va_start(arguments, format), buffer = malloc(sizeof(char) * 1024);
+	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
 		return (-1);
-	}
-	va_start(list, format);
-	if (format == NULL || list == NULL)
-		return (-1);
-	for (idx = 0; format[idx] != '\0'; idx++)
+	if (!format[i])
+		return (0);
+	for (i = 0; format && format[i]; i++)
 	{
-		if (format[idx] == '%' && format[idx + 1] == '%')
-			continue;
-		else if (format[idx] == '%')
+		if (format[i] == '%')
 		{
-			if (format[idx + 1] == ' ')
-				idx += _position(format, idx);
-			for (j = 0; ops[j].f != NULL; j++)
-			{
-				if (format[idx + 1] == *(ops[j].op))
+			if (format[i + 1] == '\0')
+			{	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+				return (-1);
+			}
+			else
+			{	function = get_print_func(format, i + 1);
+				if (function == NULL)
 				{
-					s = ops[j].f(list);
-					if (s == NULL)
+					if (format[i + 1] == ' ' && !format[i + 2])
 						return (-1);
-					_strlen(s);
-					_strcat(create_buff, s, len_buf);
-					len_buf += _strlen(s);
-					idx++;
-					break;
+					handl_buf(buffer, format[i], ibuf), len++, i--;
 				}
-			}
-			if (ops[j].f == NULL)
-			{
-				create_buff[len_buf] = format[idx];
-				len_buf++;
-			}
+				else
+				{
+					len += function(arguments, buffer, ibuf);
+					i += ev_print_func(format, i + 1);
+				}
+			} i++;
 		}
 		else
-		{
-			create_buff[len_buf] = format[idx];
-			len_buf++;
-		}
+			handl_buf(buffer, format[i], ibuf), len++;
+		for (ibuf = len; ibuf > 1024; ibuf -= 1024)
+			;
 	}
-	create_buff[len_buf] = '\0';
-	write(1, create_buff, len_buf);
-	va_end(list);
-	free(create_buff);
-	return (len_buf);
+	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+	return (len);
 }
