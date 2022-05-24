@@ -26,6 +26,13 @@ int hash;
 
 } flags_t;
 
+/**
+ * struct printManager - containing a function pointer
+ * 
+ * @f: The function associated
+ * @c: Data type augument
+ *
+ */
 typedef struct printManager
 
 {
