@@ -6,8 +6,8 @@
 #include <stdarg.h>
 
 /**
- * struct flag - struct containing flags 
- * which are "turned on"
+ * struct flag - struct containing flags
+ *which are "turned on"
  * when a flag specifier is passed to _printf()
  * @plus: '+' character flag
  * @space: ' ' character flag
@@ -28,7 +28,6 @@ int hash;
 
 /**
  * struct printManager - containing a function pointer
- * 
  * @f: The function associated
  * @c: Data type augument
  *
